@@ -6,12 +6,6 @@ mod config;
 mod handlers;
 mod states;
 
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("µPhenolphthalein");
-    format!("Hello {}!", &name)
-}
-
-
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {    
