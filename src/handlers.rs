@@ -1,4 +1,4 @@
-use actix_web::{web, Responder, HttpRequest, client};
+use actix_web::{web, Responder, HttpRequest};
 use crate::states::APIState;
 
 

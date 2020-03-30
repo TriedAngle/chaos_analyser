@@ -1,11 +1,15 @@
-use actix_web::{web, App, HttpServer, HttpRequest, Responder};
+#[macro_use]
+extern crate diesel;
+#[macro_use]
+extern crate serde;
+
+use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
-use std::sync::Mutex;
 
 mod config;
 mod handlers;
 mod states;
-
+mod models;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {    
