@@ -16,11 +16,6 @@ mod riot_api;
 mod schema;
 mod states;
 
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("World");
-    format!("Hello {}!", &name)
-}
-
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -34,8 +29,6 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-        // .route("/", web::get().to(greet))
-        // .route("/{name}", web::get().to(greet))
         .route("/riot/{name}",
            web::get().to(handlers::get_summoner_by_name),
        )
