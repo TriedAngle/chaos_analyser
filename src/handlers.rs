@@ -1,12 +1,8 @@
-use crate::states::APIState;
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{HttpRequest, Responder};
+use super::riot_api;
 
-pub async fn get_summoner_by_name(req: HttpRequest, data: web::Data<APIState>) -> impl Responder {
+pub async fn get_summoner_by_name(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("yasuo xd");
-    let summoner_url = format!(
-        "{}/lol/summoner/v4/summoners/by-name/{}?api_key={}",
-        &data.base_url, &name, &data.riot_api_key
-    );
-    let body = reqwest::get(&summoner_url).await.unwrap().text().await;
-    format!("data: {:?}", &body)
+    let summoner_data = riot_api::summoner_by_name(&name);
+    format!("data: {}", &summoner_data.await.unwrap())
 }
