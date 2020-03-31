@@ -6,5 +6,5 @@ CREATE TABLE summoners (
     name TEXT,
     id TEXT,
     puuid TEXT,
-    summoner_level TEXT
+    summoner_level BIGINT
 )

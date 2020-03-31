@@ -10,7 +10,7 @@ edition = "2018"
 actix-web = "2.0.0"
 actix-rt = "1.0.0"
 tera = "1.2.0"
-diesel = { version = "1.4.4", features = ["postgres"] }
+diesel = { version = "1.4.4", features = ["postgres", "numeric"] }
 dotenv = "0.15.0"
 serde = {version = "1.0.105", features = ["derive"]}
 reqwest = "0.10.4"

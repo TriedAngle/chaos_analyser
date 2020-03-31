@@ -6,6 +6,6 @@ table! {
         name -> Nullable<Text>,
         id -> Nullable<Text>,
         puuid -> Nullable<Text>,
-        summoner_level -> Nullable<Text>,
+        summoner_level -> Nullable<Int8>,
     }
 }
