@@ -4,6 +4,7 @@ extern crate diesel;
 extern crate serde;
 
 use actix_web::{web, App, HttpServer};
+use actix_web::{Responder, HttpRequest};
 use dotenv::dotenv;
 
 mod api_urls;
@@ -14,6 +15,11 @@ mod models;
 mod riot_api;
 mod schema;
 mod states;
+
+async fn greet(req: HttpRequest) -> impl Responder {
+    let name = req.match_info().get("name").unwrap_or("World");
+    format!("Hello {}!", &name)
+}
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -27,10 +33,12 @@ async fn main() -> std::io::Result<()> {
     println!("---**--- Server is starting    ---**---");
 
     HttpServer::new(move || {
-        App::new().route(
-            "/riot/{name}",
-            web::get().to(handlers::get_summoner_by_name),
-        )
+        App::new()
+        // .route("/", web::get().to(greet))
+        // .route("/{name}", web::get().to(greet))
+        .route("/riot/{name}",
+           web::get().to(handlers::get_summoner_by_name),
+       )
     })
     .bind(format!("{}:{}", config.server.host, config.server.port))?
     .run()

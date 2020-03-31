@@ -479,6 +479,7 @@ dependencies = [
  "dotenv",
  "reqwest",
  "serde 1.0.105",
+ "serde_json",
  "tera",
 ]
 
