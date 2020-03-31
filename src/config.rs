@@ -9,8 +9,6 @@ pub struct ServerConfig {
 #[derive(serde::Deserialize, Clone)]
 pub struct Config {
     pub server: ServerConfig,
-    pub api_key: String,
-    pub base_url: String,
 }
 
 impl Config {
@@ -19,4 +17,8 @@ impl Config {
         cfg.merge(config::Environment::new())?;
         cfg.try_into()
     }
+}
+
+pub fn get_riot_api_key() -> String {
+    dotenv::var("API_KEY").unwrap()
 }
