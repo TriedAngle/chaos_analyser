@@ -8,6 +8,7 @@ use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager};
 use dotenv::dotenv;
 use tera::Tera;
+use reqwest::Client;
 
 mod api_urls;
 mod config;
@@ -27,7 +28,6 @@ async fn main() -> std::io::Result<()> {
         .build(connection_manager)
         .expect("Failed to create pool!");
 
-
     println!("---**--- Loaded Configurations ---**---");
     println!("ip: {}", config.server.host);
     println!("port: {}", config.server.port);
@@ -35,10 +35,11 @@ async fn main() -> std::io::Result<()> {
     println!("---**--- Server is starting    ---**---");
 
     HttpServer::new(move || {
-        let tera =
-            Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
+        let client = Client::new();
         App::new()
         .data(tera)
+        .data(client)
         .data(pool.clone())
         .route("/riot/{name}",
            web::get().to(handlers::get_summoner_by_name),
