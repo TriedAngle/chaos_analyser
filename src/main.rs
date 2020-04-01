@@ -4,7 +4,8 @@ extern crate diesel;
 extern crate serde;
 
 use actix_web::{web, App, HttpServer};
-use actix_web::{Responder, HttpRequest};
+use diesel::prelude::*;
+use diesel::r2d2::{ConnectionManager};
 use dotenv::dotenv;
 
 mod api_urls;
@@ -19,7 +20,12 @@ mod states;
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
-    let config = crate::config::Config::from_env().unwrap();
+    let config = config::Config::from_env().unwrap();
+    let connection_manager = ConnectionManager::<PgConnection>::new(config::get_database_url());
+    let pool = r2d2::Pool::builder()
+        .build(connection_manager)
+        .expect("Failed to create pool!");
+
 
     println!("---**--- Loaded Configurations ---**---");
     println!("ip: {}", config.server.host);
@@ -29,6 +35,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+        .data(pool.clone())
         .route("/riot/{name}",
            web::get().to(handlers::get_summoner_by_name),
        )

@@ -8,5 +8,5 @@ pub async fn summoner_by_name(name: &str) -> Summoner {
         .replace("repx2", name)
         .replace("repx3", &config::get_riot_api_key());
     let summoner_data: &str = &reqwest::get(&summoner_url).await.unwrap().text().await.unwrap();
-    Summoner::from_json(summoner_data).await
+    Summoner::from_json(summoner_data)
 }
