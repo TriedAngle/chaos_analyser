@@ -7,6 +7,7 @@ use actix_web::{web, App, HttpServer};
 use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager};
 use dotenv::dotenv;
+use tera::Tera;
 
 mod api_urls;
 mod config;
@@ -34,7 +35,10 @@ async fn main() -> std::io::Result<()> {
     println!("---**--- Server is starting    ---**---");
 
     HttpServer::new(move || {
+        let tera =
+            Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
         App::new()
+        .data(tera)
         .data(pool.clone())
         .route("/riot/{name}",
            web::get().to(handlers::get_summoner_by_name),
