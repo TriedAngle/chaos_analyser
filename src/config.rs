@@ -22,3 +22,7 @@ impl Config {
 pub fn get_riot_api_key() -> String {
     dotenv::var("API_KEY").unwrap()
 }
+
+pub fn get_database_url() -> String {
+    dotenv::var("DATABASE_URL").unwrap()
+}
