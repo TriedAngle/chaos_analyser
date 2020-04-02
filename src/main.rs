@@ -38,8 +38,8 @@ async fn main() -> std::io::Result<()> {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
         let client = Client::new();
         App::new().data(tera).data(client).data(pool.clone()).route(
-            "/riot/{name}",
-            web::get().to(handlers::get_summoner_by_name),
+            "/rito/{region}/{summoner_name}",
+            web::get().to(handlers::summoner_page),
         )
     })
     .bind(format!("{}:{}", config.server.host, config.server.port))?

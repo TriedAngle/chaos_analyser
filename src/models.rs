@@ -46,6 +46,7 @@ pub struct LeagueEntry {
     pub mini_series: MiniSeries,
 }
 
+#[allow(dead_code)]
 impl LeagueEntry {
     pub fn from_json(data: &str) -> LeagueEntry {
         let v: Value = serde_json::from_str(data).unwrap();
@@ -69,6 +70,7 @@ impl LeagueEntry {
     }
 }
 
+#[allow(dead_code)]
 pub struct MiniSeries {
     pub losses: i32,
     pub progress: String,
@@ -76,6 +78,7 @@ pub struct MiniSeries {
     pub wins: i32,
 }
 
+#[allow(dead_code)]
 impl MiniSeries {
     pub fn from_json(data: &str) -> MiniSeries {
         let v: Value = serde_json::from_str(data).unwrap();
