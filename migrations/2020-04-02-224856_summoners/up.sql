@@ -1,5 +1,3 @@
--- Your SQL goes here
--- Your SQL goes here
 CREATE TABLE summoners (
     puuid TEXT PRIMARY KEY,
     account_id TEXT,
@@ -7,5 +5,6 @@ CREATE TABLE summoners (
     revision_date BIGINT,
     name TEXT,
     summoner_id TEXT,
-    summoner_level BIGINT
+    summoner_level BIGINT,
+    region VARCHAR(4)
 )

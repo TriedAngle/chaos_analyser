@@ -7,5 +7,6 @@ table! {
         name -> Nullable<Text>,
         summoner_id -> Nullable<Text>,
         summoner_level -> Nullable<Int8>,
+        region -> Nullable<Varchar>,
     }
 }

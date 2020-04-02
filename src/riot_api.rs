@@ -20,7 +20,7 @@ pub async fn summoner_by_name(name: &str, region: &str, client: &Client) -> Summ
         .await
         .unwrap();
 
-    Summoner::from_json(summoner_data)
+    Summoner::from_json(summoner_data, &region)
 }
 
 fn get_region_link(region: &str) -> &str {
