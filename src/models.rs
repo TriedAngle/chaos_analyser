@@ -30,7 +30,7 @@ impl Summoner {
     }
 }
 
-pub struct LeagueEntry {
+pub struct SummonerRanked {
     pub puuid: String,
     pub league_id: String,
     pub summoner_id: String,
@@ -45,35 +45,34 @@ pub struct LeagueEntry {
     pub veteran: bool,
     pub fresh_blood: bool,
     pub inactive: bool,
-    pub mini_series: MiniSeries,
+    //pub mini_series: SummonerPromo,
 }
 
-#[allow(dead_code)]
-impl LeagueEntry {
-    pub fn from_json(data: &str) -> LeagueEntry {
+impl SummonerRanked {
+    pub fn from_json(data: &str) -> SummonerRanked {
         let v: Value = serde_json::from_str(data).unwrap();
-        LeagueEntry {
-            puuid: v["puuid"].as_str().unwrap().to_string(),
-            league_id: v["leagueId"].as_str().unwrap().to_string(),
-            summoner_id: v["summonerId"].as_str().unwrap().to_string(),
-            summoner_name: v["summonerName"].as_str().unwrap().to_string(),
-            queue_type: v["id"].as_str().unwrap().to_string(),
-            tier: v["puuid"].as_str().unwrap().to_string(),
-            rank: v["summonerLevel"].as_str().unwrap().to_string(),
-            league_points: v["leaguePoints"].as_i64().unwrap() as i32,
-            wins: v["wins"].as_i64().unwrap() as i32,
-            losses: v["losses"].as_i64().unwrap() as i32,
-            hot_streak: v["hotStreak"].as_bool().unwrap(),
-            veteran: v["veteran"].as_bool().unwrap(),
-            fresh_blood: v["freshBlood"].as_bool().unwrap(),
-            inactive: v["inactive"].as_bool().unwrap(),
-            mini_series: MiniSeries::from_value(&v),
+        SummonerRanked {
+            puuid: "10".to_string(),
+            league_id: v[0]["leagueId"].as_str().unwrap().to_string(),
+            summoner_id: v[0]["summonerId"].as_str().unwrap().to_string(),
+            summoner_name: v[0]["summonerName"].as_str().unwrap().to_string(),
+            queue_type: v[0]["queueType"].as_str().unwrap().to_string(),
+            tier: v[0]["tier"].as_str().unwrap().to_string(),
+            rank: v[0]["rank"].as_str().unwrap().to_string(),
+            league_points: v[0]["leaguePoints"].as_i64().unwrap() as i32,
+            wins: v[0]["wins"].as_i64().unwrap() as i32,
+            losses: v[0]["losses"].as_i64().unwrap() as i32,
+            hot_streak: v[0]["hotStreak"].as_bool().unwrap(),
+            veteran: v[0]["veteran"].as_bool().unwrap(),
+            fresh_blood: v[0]["freshBlood"].as_bool().unwrap(),
+            inactive: v[0]["inactive"].as_bool().unwrap(),
+            //mini_series: SummonerPromo::from_value(&v),
         }
     }
 }
 
 #[allow(dead_code)]
-pub struct MiniSeries {
+pub struct SummonerPromo {
     pub losses: i32,
     pub progress: String,
     pub target: i32,
@@ -81,10 +80,10 @@ pub struct MiniSeries {
 }
 
 #[allow(dead_code)]
-impl MiniSeries {
-    pub fn from_json(data: &str) -> MiniSeries {
+impl SummonerPromo {
+    pub fn from_json(data: &str) -> SummonerPromo {
         let v: Value = serde_json::from_str(data).unwrap();
-        MiniSeries {
+        SummonerPromo {
             losses: v["losses"].as_i64().unwrap() as i32,
             progress: v["progress"].as_str().unwrap().to_string(),
             target: v["target"].as_i64().unwrap() as i32,
@@ -92,8 +91,8 @@ impl MiniSeries {
         }
     }
 
-    pub fn from_value(v: &Value) -> MiniSeries {
-        MiniSeries {
+    pub fn from_value(v: &Value) -> SummonerPromo {
+        SummonerPromo {
             losses: v["miniSeries.losses"].as_i64().unwrap() as i32,
             progress: v["miniSeries.progress"].as_str().unwrap().to_string(),
             target: v["miniSeries.progress"].as_i64().unwrap() as i32,

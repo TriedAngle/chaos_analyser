@@ -17,5 +17,5 @@ pub const BASE_URL_RU: &str = "https://ru.api.riotgames.com/";
 pub const SUMMONER_URL_BY_NAME: &str = "in1/lol/summoner/v4/summoners/by-name/in2?api_key=in3";
 
 //      ---SUMMONER RANK---
-#[allow(dead_code)]
-pub const SUMMONER_RANK_URL_BY_SUMMONER_ID: &str = "in1/lol/league/v4/entries/by-summoner/in2";
+pub const SUMMONER_RANK_URL_BY_SUMMONER_ID: &str =
+    "in1/lol/league/v4/entries/by-summoner/in2?api_key=in3";
