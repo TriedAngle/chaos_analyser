@@ -1,5 +1,5 @@
 use super::db;
-use super::models::{Summoner, SummonerRanked};
+use super::models::{NewSummoner, NewSummonerRanked, Summoner, SummonerRanked};
 use super::riot_api;
 use actix_web::{web, HttpRequest, HttpResponse};
 use diesel::r2d2::{self, ConnectionManager};
@@ -23,21 +23,31 @@ pub async fn summoner_page(
     let conn: r2d2::PooledConnection<ConnectionManager<PgConnection>> =
         pool.get().expect("couldn't get db connection from pool");
 
-    let summoner: Summoner = riot_api::summoner_by_name(&name, &region, &client).await;
-    let summoner_ranked: SummonerRanked = riot_api::summoner_ranked_by_id(
+    let new_summoner: NewSummoner = riot_api::summoner_by_name(&name, &region, &client).await;
+
+    //db::insert_or_update_summoner( new_summoner.clone(), &conn);
+    db::insert_summoner( new_summoner.clone(), &conn);
+
+    let summoner: Summoner = db::get_by_puuid(&new_summoner.puuid, &conn).unwrap();
+
+    let new_summoner_ranked: NewSummonerRanked = riot_api::summoner_ranked_by_id(
         riot_api::get_summoner_id_from_summoner(&summoner).await,
+        summoner.id,
         &region,
         &client,
     )
     .await;
 
-    db::insert_or_update_summoner(&conn, summoner.clone()).unwrap();
+    db::insert_summoner_ranked(new_summoner_ranked.clone(), summoner.id, &conn);
 
-    ctx.insert("summoner_name", &summoner.name);
-    ctx.insert("summoner_level", &summoner.summoner_level);
-    ctx.insert("summoner_icon_id", &summoner.profile_icon_id);
-    ctx.insert("summoner_ranked_rank", &summoner_ranked.rank);
-    ctx.insert("summoner_ranked_wins", &summoner_ranked.wins);
+    println!("{:?}", summoner);
+    println!("{:?}", new_summoner_ranked);
+
+    ctx.insert("summoner_name", &new_summoner.name);
+    ctx.insert("summoner_level", &new_summoner.summoner_level);
+    ctx.insert("summoner_icon_id", &new_summoner.profile_icon_id);
+    ctx.insert("summoner_ranked_rank", &new_summoner_ranked.s_rank);
+    ctx.insert("summoner_ranked_wins", &new_summoner_ranked.s_wins);
 
     let s = tmpl.render("summoner.html", &ctx).unwrap();
     HttpResponse::Ok().content_type("text/html").body(s)
