@@ -23,7 +23,8 @@ pub async fn get_all(conn: &PgConnection) -> QueryResult<Vec<Summoner>> {
 
 /// returning a summoner by its id
 pub async fn get_by_id(id: i64, conn: &PgConnection) -> QueryResult<Summoner> {
-    all_summoners.find(id).get_result::<Summoner>(conn)
+    all_summoners.find(id)
+        .get_result::<Summoner>(conn)
 }
 
 /// returning only one Summoner as no summoners have the same puuid crossregional

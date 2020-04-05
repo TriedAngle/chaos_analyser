@@ -17,7 +17,7 @@ pub async fn summoner_page(
 
     let riot_summoner: NewSummoner =
         crate::riot_api::summoner_by_name(&name, &region, &client).await;
-    let riot_summoner_ranked: RiotSummonerRanked = crate::riot_api::riot_summoner_ranked_by_id(
+    let riot_summoner_ranked: RiotSummonerRanked = crate::riot_api::riot_summoner_ranked_by_r_summoner_id(
         &riot_summoner.r_summoner_id,
         &riot_summoner.region,
         &client,

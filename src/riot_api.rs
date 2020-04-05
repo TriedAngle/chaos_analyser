@@ -25,6 +25,10 @@ pub async fn summoner_by_name(name: &str, region: &str, client: &Client) -> NewS
     NewSummoner::from_json(summoner_data, &region)
 }
 
+// pub async fn summoner_by_puuid(puuid: &str, client: &Client) -> NewSummoner {
+//     let 
+// }
+
 pub async fn summoner_ranked_by_id(
     r_summoner_id: &str,
     summoner_id: i64,
@@ -49,7 +53,7 @@ pub async fn summoner_ranked_by_id(
     NewSummonerRanked::from_json(summoner_ranked_data, summoner_id)
 }
 
-pub async fn riot_summoner_ranked_by_id(
+pub async fn riot_summoner_ranked_by_r_summoner_id(
     r_summoner_id: &str,
     region: &str,
     client: &Client,
@@ -69,7 +73,7 @@ pub async fn riot_summoner_ranked_by_id(
         .await
         .unwrap();
 
-    RiotSummonerRanked::from_json(riot_summoner_ranked_data)
+    RiotSummonerRanked::from_json(riot_summoner_ranked_data).await
 }
 
 pub async fn get_summoner_id_from_new_summoner(new_summoner: &NewSummoner) -> &str {
