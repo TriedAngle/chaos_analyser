@@ -47,7 +47,4 @@ table! {
     }
 }
 
-allow_tables_to_appear_in_same_query!(
-    summoner_rankeds,
-    summoners,
-);
+allow_tables_to_appear_in_same_query!(summoner_rankeds, summoners,);

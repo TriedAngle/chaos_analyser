@@ -1,0 +1,23 @@
+{% extends "structure/base.html" %}
+
+
+{% block title %} {{summoner.name}} {% endblock title %}
+{% block head %} 
+    {{ super() }}
+{% endblock head %}
+    
+{% block content %}
+    {% if error == "" %}
+    <h1>{{ summoner.name }} || {{ summoner.summoner_level }}  [{{ summoner.region }}]</h1>
+    <img src="http://ddragon.leagueoflegends.com/cdn/10.7.1/img/profileicon/{{ summoner.profile_icon_id }}.png"/>
+    <p>{{summoner_ranked.s_tier}} {{summoner_ranked.s_rank}} | Games: {{s_games}} || <font color="green">{{summoner_ranked.s_wins}}</font> | <font color="red">{{ summoner_ranked.s_losses}}</font></p>
+    <p>{{summoner_ranked.f_tier}} {{summoner_ranked.f_rank}} | Games: {{f_games}} || <font color="green">{{summoner_ranked.f_wins}}</font> | <font color="red">{{ summoner_ranked.f_losses}}</font></p>
+    <p> IDS: </p>
+    <p> db_id: NONE (as this is not from the internal database) </p>
+    <p> puuid: {{ summoner.puuid }} </p>
+    <p> accound_id: {{ summoner.account_id }} </p>
+    <p> summoner_id: {{ summoner.r_summoner_id }} </p>
+    {% else %}
+    <h1>{{error}}</h1>
+    {% endif %}
+{% endblock content %}
