@@ -60,6 +60,38 @@ async fn main() -> std::io::Result<()> {
                         web::get().to(handlers::views::db_view::summoner_page),
                     )),
             )
+            .service(
+                web::scope("/api")
+                .service(
+                    web::scope("/db")
+                    .service(
+                        web::scope("/summoners")
+                        .route("/", web::get().to(handlers::api::db_api::get_summoner_all))
+                        .route("/{id}", web::get().to(handlers::api::db_api::get_summoner_by_id))
+                        .route("/by-name/{summoner_name}", web::get().to(handlers::api::db_api::get_summoners_by_name))
+                        .route("/by-puuid/{puuid}", web::get().to(handlers::api::db_api::get_summoner_by_puuid))
+                        .route("/by-region-name/{region}/{summoner_name}", web::get().to(handlers::api::db_api::get_summoner_by_name_and_region))
+                    )
+                    .service(
+                        web::scope("summoner-rankeds")
+                        .route("/", web::get().to(handlers::api::db_api::get_summoner_rankeds_all))
+                        .route("/{id}", web::get().to(handlers::api::db_api::get_summoner_ranked_by_summoner_id))
+                    )
+                    
+                )
+                .service(
+                    web::scope("/riot")
+                    .service(
+                        web::scope("/summoners/")
+                        .route("/by-name-region/{region}/{name}", web::get().to(handlers::api::riot_api::get_summoner_by_name_and_region))
+                    )
+                    .service(
+                        web::scope("summoner-rankeds")
+                        .route("/by-region-r-id/{region}/{r_summoner_id}", web::get().to(handlers::api::riot_api::get_summoner_riot_summoner_ranked_by_id_and_region))
+                        .route("/with-data-id/{region}/{summoner_id}/{r_summoner_id}", web::get().to(handlers::api::riot_api::get_summoner_by_name_and_region))
+                    )
+                )
+            )
     })
     .bind(format!("{}:{}", config.server.host, config.server.port))?
     .run()
