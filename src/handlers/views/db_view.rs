@@ -9,8 +9,7 @@ type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 pub async fn summoner_page(
     req: HttpRequest,
     pool: web::Data<DbPool>,
-    tmpl: web::Data<tera::Tera>,
-    client: web::Data<Client>,
+    tmpl: web::Data<tera::Tera>
 ) -> HttpResponse {
     let mut ctx: tera::Context = tera::Context::new();
     let conn: r2d2::PooledConnection<ConnectionManager<PgConnection>> =
