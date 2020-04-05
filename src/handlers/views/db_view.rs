@@ -39,6 +39,8 @@ pub async fn summoner_page(
             Err(_) => SummonerRanked::create_empty(),
          };
 
+    ctx.insert("s_games", &(summoner_ranked.s_wins + summoner_ranked.s_losses));
+    ctx.insert("f_games", &(summoner_ranked.f_wins + summoner_ranked.f_losses));
     ctx.insert("summoner", &summoner);
     ctx.insert("summoner_ranked", &summoner_ranked);
 

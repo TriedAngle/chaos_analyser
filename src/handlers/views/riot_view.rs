@@ -24,6 +24,9 @@ pub async fn summoner_page(
     )
     .await;
 
+    ctx.insert("error", "");
+    ctx.insert("s_games", &(riot_summoner_ranked.s_wins + riot_summoner_ranked.s_losses));
+    ctx.insert("f_games", &(riot_summoner_ranked.f_wins + riot_summoner_ranked.f_losses));
     ctx.insert("summoner", &riot_summoner);
     ctx.insert("summoner_ranked", &riot_summoner_ranked);
 
