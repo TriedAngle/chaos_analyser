@@ -25,20 +25,19 @@ pub async fn summoner_page(
 
     let new_summoner: NewSummoner = riot_api::summoner_by_name(&name, &region, &client).await;
 
-    //db::insert_or_update_summoner( new_summoner.clone(), &conn);
-    db::insert_summoner( new_summoner.clone(), &conn);
+    db::summoner::insert_summoner( new_summoner.clone(), &conn);
 
-    let summoner: Summoner = db::get_by_puuid(&new_summoner.puuid, &conn).unwrap();
+    let summoner: Summoner = db::summoner::get_by_puuid(&new_summoner.puuid, &conn).unwrap();
 
     let new_summoner_ranked: NewSummonerRanked = riot_api::summoner_ranked_by_id(
-        riot_api::get_summoner_id_from_summoner(&summoner).await,
+        &summoner.r_summoner_id,
         summoner.id,
         &region,
         &client,
     )
     .await;
 
-    db::insert_summoner_ranked(new_summoner_ranked.clone(), summoner.id, &conn);
+    db::summoner_rankeds::insert_summoner_ranked(new_summoner_ranked.clone(), &conn);
 
     println!("{:?}", summoner);
     println!("{:?}", new_summoner_ranked);

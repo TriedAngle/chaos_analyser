@@ -1,9 +1,13 @@
 use super::schema::*;
 use serde_json::Value;
-use std::convert::TryFrom;
 
 const SOLO_QUEUE: &str = "RANKED_SOLO_5x5";
 
+
+/// id / summoner_id is the id used in the database
+/// r_summoner_id is the encrypted id returned by the API
+/// region is not returned by the Riot API 
+/// but extracted from the link used to call a summoner from the Riot API
 #[derive(Queryable, Serialize, Deserialize, Clone, Debug)]
 pub struct Summoner {
     pub id: i64,
@@ -46,6 +50,25 @@ impl NewSummoner {
     }
 }
 
+/// the Riot API returns a completly different representation
+/// summoner_id is the id from the summoner data table 
+/// not the summoner_id / r_summoner_id from the Riot API
+/// in order to get the summoner_id, a call to the database must be made first
+/// ```
+/// // get NewSummoner from Riot API
+/// let new_summoner: NewSummoner = riot_api::summoner_by_name(&name, &region, &client).await;
+/// // insert the NewSummmoner into the database
+/// db::summoner::insert_summoner( new_summoner.clone(), &conn);
+/// // get the summoner with its id from the database
+/// let summoner: Summoner = db::summoner::get_by_puuid(&new_summoner.puuid, &conn).unwrap();
+/// // create NewSummonerRanked from riot api and summoner
+/// let new_summoner_ranked: NewSummonerRanked = riot_api::summoner_ranked_by_id(&summoner.r_summoner_id, summoner.id, &region, &client).await;
+/// // NewSummonerRanked could be inserted or used for other things new
+/// // inserting into database
+/// db::summoner_rankeds::insert_summoner_ranked(new_summoner_ranked.clone(), &conn);
+/// // insert into a Tera context for web display
+/// ctx.insert("summoner_ranked_rank", &new_summoner_ranked.s_rank);
+/// ```
 #[derive(Queryable, Serialize, Deserialize, Clone)]
 pub struct SummonerRanked {
     pub id: i64,
@@ -231,9 +254,5 @@ impl NewSummonerRanked {
             s_ms_trg,
             f_ms_trg,
         }
-    }
-
-    pub fn set_summoner_id(mut self, summoner_id: i64){
-        self.summoner_id = summoner_id;
     }
 }

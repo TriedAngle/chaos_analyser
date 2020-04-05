@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use super::api_urls;
 use super::config;
 use super::models::{NewSummoner, NewSummonerRanked, Summoner};
