@@ -1,0 +1,14 @@
+{% extends "structure/base.html" %}
+
+
+{% block title %} {{summoner.name}} {% endblock title %}
+{% block head %} 
+    {{ super() }}
+{% endblock head %}
+    
+{% block content %}
+    <h1>{{ summoner.name }} || {{ summoner.summoner_level }}</h1>
+    <img src="http://ddragon.leagueoflegends.com/cdn/10.7.1/img/profileicon/{{ summoner.profile_icon_id }}.png"/>
+    <p>{{summoner_ranked.s_tier}} {{summoner_ranked.s_rank}} | {{summoner_ranked.s_wins}} {{ summoner_ranked.s_losses}}</p>
+    <p>{{summoner_ranked.f_tier}} {{summoner_ranked.f_rank}} | {{summoner_ranked.f_wins}} {{ summoner_ranked.f_losses}}</p>
+{% endblock content %}

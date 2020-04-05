@@ -2,7 +2,7 @@
 
 use super::api_urls;
 use super::config;
-use super::models::{NewSummoner, NewSummonerRanked, Summoner};
+use super::models::{NewSummoner, NewSummonerRanked, RiotSummonerRanked, Summoner};
 
 use reqwest::Client;
 
@@ -31,8 +31,8 @@ pub async fn summoner_ranked_by_id(
     region: &str,
     client: &Client,
 ) -> NewSummonerRanked {
-    let region_link = get_region_link(&region);
-    let summoner_ranked_url = api_urls::SUMMONER_RANK_URL_BY_SUMMONER_ID
+    let region_link: &str = get_region_link(&region);
+    let summoner_ranked_url: String = api_urls::SUMMONER_RANK_URL_BY_SUMMONER_ID
         .replace("in1", region_link)
         .replace("in2", r_summoner_id)
         .replace("in3", &config::get_riot_api_key());
@@ -47,6 +47,29 @@ pub async fn summoner_ranked_by_id(
         .unwrap();
 
     NewSummonerRanked::from_json(summoner_ranked_data, summoner_id)
+}
+
+pub async fn riot_summoner_ranked_by_id(
+    r_summoner_id: &str,
+    region: &str,
+    client: &Client,
+) -> RiotSummonerRanked {
+    let region_link: &str = get_region_link(&region);
+    let summoner_ranked_url: String = api_urls::SUMMONER_RANK_URL_BY_SUMMONER_ID
+        .replace("in1", region_link)
+        .replace("in2", r_summoner_id)
+        .replace("in3", &config::get_riot_api_key());
+
+    let riot_summoner_ranked_data: &str = &client
+        .get(&summoner_ranked_url)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+
+    RiotSummonerRanked::from_json(riot_summoner_ranked_data)
 }
 
 pub async fn get_summoner_id_from_new_summoner(new_summoner: &NewSummoner) -> &str {

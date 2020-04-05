@@ -1,4 +1,3 @@
-
 #[macro_use]
 extern crate diesel;
 #[macro_use]
@@ -28,7 +27,8 @@ async fn main() -> std::io::Result<()> {
     // (will probably be removed soon)
     let config: config::Config = config::Config::from_env().unwrap();
     // creates new connection manager and a pool for parallel database calls between multiple actors
-    let connection_manager: ConnectionManager<PgConnection> = ConnectionManager::<PgConnection>::new(config::get_database_url());
+    let connection_manager: ConnectionManager<PgConnection> =
+        ConnectionManager::<PgConnection>::new(config::get_database_url());
     let pool: diesel::r2d2::Pool<ConnectionManager<PgConnection>> = r2d2::Pool::builder()
         .build(connection_manager)
         .expect("Failed to create pool!");
@@ -45,10 +45,21 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         let tera: Tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
         let client = Client::new();
-        App::new().data(tera).data(client).data(pool.clone()).route(
-            "/rito/{region}/{summoner_name}",
-            web::get().to(handlers::summoner_page),
-        )
+        App::new()
+            .data(tera)
+            .data(client)
+            .data(pool.clone())
+            .service(
+                web::scope("/views")
+                    .service(web::scope("/riot").route(
+                        "/{region}/{summoner_name}",
+                        web::get().to(handlers::views::riot_view::summoner_page),
+                    ))
+                    .service(web::scope("/db").route(
+                        "{region}/{summoner_name}",
+                        web::get().to(handlers::views::db_view::summoner_page),
+                    )),
+            )
     })
     .bind(format!("{}:{}", config.server.host, config.server.port))?
     .run()
