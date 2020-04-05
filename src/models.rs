@@ -21,6 +21,22 @@ pub struct Summoner {
     pub region: String,
 }
 
+impl Summoner {
+    pub fn create_empty() -> Summoner {
+        Summoner {
+            id: 0,
+            puuid: "".to_string(),
+            account_id: "".to_string(),
+            profile_icon_id: 0,
+            revision_date: 0,
+            name: "".to_string(),
+            r_summoner_id: "".to_string(),
+            summoner_level: 0,
+            region: "".to_string()
+        }
+    }
+}
+
 #[derive(Serialize, Insertable, Deserialize, Clone, Debug)]
 #[table_name = "summoners"]
 pub struct NewSummoner {
@@ -101,6 +117,43 @@ pub struct SummonerRanked {
     pub f_ms_prg: String,
     pub s_ms_trg: i32,
     pub f_ms_trg: i32,
+}
+
+impl SummonerRanked {
+    pub fn create_empty() -> SummonerRanked {
+        SummonerRanked {
+            id: 0,
+            summoner_id: 0,
+            s_tier: "".to_string(),
+            f_tier: "".to_string(),
+            s_rank: "".to_string(),
+            f_rank: "".to_string(),
+            s_league_points: 0,
+            f_league_points: 0,
+            s_wins: 0,
+            f_wins: 0,
+            s_losses: 0,
+            f_losses: 0,
+            s_hot_streak: false,
+            f_hot_streak: false,
+            s_veteran: false,
+            f_veteran: false,
+            s_fresh_blood: false,
+            f_fresh_blood: false,
+            s_inactive: false,
+            f_inactive: false,
+            s_is_ms: false,
+            f_is_ms: false,
+            s_ms_w: 0,
+            f_ms_w: 0,
+            s_ms_l: 0,
+            f_ms_l: 0,
+            s_ms_prg: "".to_string(),
+            f_ms_prg: "".to_string(),
+            s_ms_trg: 0,
+            f_ms_trg: 0,
+        }
+    }
 }
 
 #[derive(Serialize, Insertable, Deserialize, AsChangeset, Clone, Debug)]

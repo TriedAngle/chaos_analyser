@@ -60,7 +60,7 @@ pub async fn get_by_name_and_region(
 ///
 /// avoids duplicates (uses check_existing_summoner via puuid)
 pub async fn insert_summoner(new_summoner: NewSummoner, conn: &PgConnection) -> bool {
-    if check_existing_summoner(&new_summoner.puuid, conn).await {
+    if check_summoner_exists_by_puuid(&new_summoner.puuid, conn).await {
         update_summoner(new_summoner, conn).await
     } else {
         diesel::insert_into(summoners::table)
@@ -93,10 +93,25 @@ pub async fn update_summoner(new_summoner: NewSummoner, conn: &PgConnection) -> 
 
 /// a helper function to check whether to update or insert a NewSummoner / to avoid duplicates
 /// using puuid instead of id as id is not known when inserting and puuid is also a unique 'identifier'
-pub async fn check_existing_summoner(puuid: &str, conn: &PgConnection) -> bool {
+pub async fn check_summoner_exists_by_puuid(puuid: &str, conn: &PgConnection) -> bool {
     diesel::select(diesel::dsl::exists(
         summoners::table.filter(summoners::puuid.eq(puuid)),
     ))
     .get_result::<bool>(conn)
     .is_ok()
+}
+
+pub async fn check_summoner_exists_by_name_and_region(
+    summoner_name: &str,
+    summoner_region: &str,
+    conn: &PgConnection,
+) -> bool {
+    all_summoners
+        .filter(
+            summoners::name
+                .eq(summoner_name)
+                .and(summoners::region.eq(summoner_region)),
+        )
+        .get_result::<Summoner>(conn)
+        .is_ok()
 }

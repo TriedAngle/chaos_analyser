@@ -22,7 +22,10 @@ pub async fn get_all(conn: &PgConnection) -> QueryResult<Vec<SummonerRanked>> {
 }
 
 /// returning a SummonerRanked by its summoner_id as its id is only for database management
-pub async fn get_by_summoner_id(summoner_id: i64, conn: &PgConnection) -> QueryResult<SummonerRanked> {
+pub async fn get_by_summoner_id(
+    summoner_id: i64,
+    conn: &PgConnection,
+) -> QueryResult<SummonerRanked> {
     all_summoner_rankeds
         .filter(summoner_rankeds::summoner_id.eq(summoner_id))
         .get_result::<SummonerRanked>(conn)

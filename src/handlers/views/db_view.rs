@@ -22,11 +22,22 @@ pub async fn summoner_page(
         .unwrap_or("µPhenolphthalein");
 
     let summoner: Summoner =
-        crate::db::summoner::get_by_name_and_region(&name, &region, &conn).await.unwrap();
-    let summoner_ranked: SummonerRanked =
-        crate::db::summoner_rankeds::get_by_summoner_id(summoner.id, &conn).await.unwrap();
+        match crate::db::summoner::get_by_name_and_region(&name, &region, &conn).await {
+            Ok(summoner) => {
+                ctx.insert("error", "");
+                summoner
+            },
+            Err(_) => {
+                ctx.insert("error", "user does not exist");
+                Summoner::create_empty()
+            },
+        };
 
-    println!("{:?}", summoner_ranked);
+    let summoner_ranked: SummonerRanked =
+         match crate::db::summoner_rankeds::get_by_summoner_id(summoner.id, &conn).await {
+            Ok(summoner_ranked) => summoner_ranked,
+            Err(_) => SummonerRanked::create_empty(),
+         };
 
     ctx.insert("summoner", &summoner);
     ctx.insert("summoner_ranked", &summoner_ranked);
