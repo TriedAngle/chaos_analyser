@@ -69,7 +69,7 @@ pub async fn riot_summoner_ranked_by_id(
         .await
         .unwrap();
 
-    RiotSummonerRanked::from_json(riot_summoner_ranked_data)
+    RiotSummonerRanked::from_json(riot_summoner_ranked_data).await
 }
 
 pub async fn get_summoner_id_from_new_summoner(new_summoner: &NewSummoner) -> &str {

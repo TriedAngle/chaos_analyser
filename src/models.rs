@@ -349,11 +349,13 @@ pub struct RiotSummonerRanked {
 }
 
 impl RiotSummonerRanked {
-    pub fn from_json(data: &str) -> RiotSummonerRanked {
+    pub async fn from_json(data: &str) -> RiotSummonerRanked {
         let v: Value = serde_json::from_str(data).unwrap();
 
         let x: usize;
         let y: usize;
+
+        println!("{:?}", v);
 
         if v[0]["queueType"].as_str().unwrap() == SOLO_QUEUE {
             x = 0;
@@ -423,9 +425,9 @@ impl RiotSummonerRanked {
         }
 
         if !v[y]["tier"].is_null() {
-            f_league_id = v[x]["leagueId"].as_str().unwrap().to_string();
-            f_r_summoner_id = v[x]["summonerId"].as_str().unwrap().to_string();
-            f_summoner_name = v[x]["summonerName"].as_str().unwrap().to_string();
+            f_league_id = v[y]["leagueId"].as_str().unwrap().to_string();
+            f_r_summoner_id = v[y]["summonerId"].as_str().unwrap().to_string();
+            f_summoner_name = v[y]["summonerName"].as_str().unwrap().to_string();
             f_tier = v[y]["tier"].as_str().unwrap().to_string();
             f_rank = v[y]["rank"].as_str().unwrap().to_string();
             f_league_points = v[y]["leaguePoints"].as_i64().unwrap() as i32;
