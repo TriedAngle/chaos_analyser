@@ -32,7 +32,7 @@ impl Summoner {
             name: "".to_string(),
             r_summoner_id: "".to_string(),
             summoner_level: 0,
-            region: "".to_string()
+            region: "".to_string(),
         }
     }
 }

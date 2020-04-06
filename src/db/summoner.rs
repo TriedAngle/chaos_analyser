@@ -23,8 +23,7 @@ pub async fn get_all(conn: &PgConnection) -> QueryResult<Vec<Summoner>> {
 
 /// returning a summoner by its id
 pub async fn get_by_id(id: i64, conn: &PgConnection) -> QueryResult<Summoner> {
-    all_summoners.find(id)
-        .get_result::<Summoner>(conn)
+    all_summoners.find(id).get_result::<Summoner>(conn)
 }
 
 /// returning only one Summoner as no summoners have the same puuid crossregional
@@ -98,8 +97,7 @@ pub async fn check_summoner_exists_by_puuid(puuid: &str, conn: &PgConnection) ->
     diesel::select(diesel::dsl::exists(
         summoners::table.filter(summoners::puuid.eq(puuid)),
     ))
-    .get_result::<bool>(conn)
-    .is_ok()
+    .get_result::<bool>(conn).unwrap()
 }
 
 pub async fn check_summoner_exists_by_name_and_region(
