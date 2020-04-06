@@ -9,7 +9,7 @@ type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 pub async fn summoner_page(
     req: HttpRequest,
     pool: web::Data<DbPool>,
-    tmpl: web::Data<tera::Tera>
+    tmpl: web::Data<tera::Tera>,
 ) -> HttpResponse {
     let mut ctx: tera::Context = tera::Context::new();
     let conn: r2d2::PooledConnection<ConnectionManager<PgConnection>> =
@@ -25,21 +25,27 @@ pub async fn summoner_page(
             Ok(summoner) => {
                 ctx.insert("error", "");
                 summoner
-            },
+            }
             Err(_) => {
                 ctx.insert("error", "user does not exist");
                 Summoner::create_empty()
-            },
+            }
         };
 
     let summoner_ranked: SummonerRanked =
-         match crate::db::summoner_rankeds::get_by_summoner_id(summoner.id, &conn).await {
+        match crate::db::summoner_rankeds::get_by_summoner_id(summoner.id, &conn).await {
             Ok(summoner_ranked) => summoner_ranked,
             Err(_) => SummonerRanked::create_empty(),
-         };
+        };
 
-    ctx.insert("s_games", &(summoner_ranked.s_wins + summoner_ranked.s_losses));
-    ctx.insert("f_games", &(summoner_ranked.f_wins + summoner_ranked.f_losses));
+    ctx.insert(
+        "s_games",
+        &(summoner_ranked.s_wins + summoner_ranked.s_losses),
+    );
+    ctx.insert(
+        "f_games",
+        &(summoner_ranked.f_wins + summoner_ranked.f_losses),
+    );
     ctx.insert("summoner", &summoner);
     ctx.insert("summoner_ranked", &summoner_ranked);
 

@@ -17,16 +17,23 @@ pub async fn summoner_page(
 
     let riot_summoner: NewSummoner =
         crate::riot_api::summoner_by_name(&name, &region, &client).await;
-    let riot_summoner_ranked: RiotSummonerRanked = crate::riot_api::riot_summoner_ranked_by_r_summoner_id(
-        &riot_summoner.r_summoner_id,
-        &riot_summoner.region,
-        &client,
-    )
-    .await;
+    let riot_summoner_ranked: RiotSummonerRanked =
+        crate::riot_api::riot_summoner_ranked_by_r_summoner_id(
+            &riot_summoner.r_summoner_id,
+            &riot_summoner.region,
+            &client,
+        )
+        .await;
 
     ctx.insert("error", "");
-    ctx.insert("s_games", &(riot_summoner_ranked.s_wins + riot_summoner_ranked.s_losses));
-    ctx.insert("f_games", &(riot_summoner_ranked.f_wins + riot_summoner_ranked.f_losses));
+    ctx.insert(
+        "s_games",
+        &(riot_summoner_ranked.s_wins + riot_summoner_ranked.s_losses),
+    );
+    ctx.insert(
+        "f_games",
+        &(riot_summoner_ranked.f_wins + riot_summoner_ranked.f_losses),
+    );
     ctx.insert("summoner", &riot_summoner);
     ctx.insert("summoner_ranked", &riot_summoner_ranked);
 

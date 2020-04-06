@@ -25,9 +25,25 @@ pub async fn summoner_by_name(name: &str, region: &str, client: &Client) -> NewS
     NewSummoner::from_json(summoner_data, &region)
 }
 
-// pub async fn summoner_by_puuid(puuid: &str, client: &Client) -> NewSummoner {
-//     let 
-// }
+pub async fn summoner_by_puuid(puuid: &str, region: &str, client: &Client) -> NewSummoner {
+    let region_link: &str = get_region_link(&region);
+    let summoner_url: String = api_urls::SUMMONER_URL_BY_PUUID
+        .replace("in1", region_link)
+        .replace("in2", puuid)
+        .replace("in3", &config::get_riot_api_key());
+
+    let summoner_data: &str = &client
+        .get(&summoner_url)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+
+    NewSummoner::from_json(summoner_data, &region)
+}
+
 
 pub async fn summoner_ranked_by_id(
     r_summoner_id: &str,
