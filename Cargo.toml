@@ -1,5 +1,5 @@
 [package]
-name = "chaos_analyser"
+name = "chaotic-analyser"
 version = "0.2.0"
 authors = ["sebastian"]
 edition = "2018"
@@ -7,15 +7,15 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "2.0.0"
-actix-rt = "1.0.0"
+actix-web = "3.1.0"
+actix-cors = "0.5.0"
 tera = "1.2.0"
-diesel = { version = "1.4.4", features = ["postgres", "r2d2", "numeric"] }
-r2d2 = "0.8.8"
-futures = "0.3.4"
+diesel = { git = "https://github.com/diesel-rs/diesel", features = ["postgres", "r2d2", "chrono"] }
+r2d2 = "0.8.9"
+futures = "0.3.7"
 dotenv = "0.15.0"
-serde = {version = "1.0.105", features = ["derive"]}
-serde_json = "1.0.50"
-reqwest = "0.10.4"
-chrono = "0.4.11"
+serde = "1.0.117"
+serde_json = "1.0.59"
+serde_qs = "0.7.0"
+chrono = { version = "0.4.15", features = ["serde"] }
 config = "0.10.1"
