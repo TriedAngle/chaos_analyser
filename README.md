@@ -10,5 +10,5 @@
 
 <p align="center">
   <strong> Note: </strong> this project is under heavy development and not really usable from a consumer-perspective 
-  right now. Expect many breaking updates as architecture and features are not decided yet.
+  right now. Expect breaking changes.
 </p>
