@@ -27,7 +27,7 @@ impl Config {
             server_address: values[0].clone(),
             db_address: values[1].clone(),
             pool_limit,
-            api_key: values[3].clone()
+            api_key: values[3].clone(),
         }
     }
 }

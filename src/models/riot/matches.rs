@@ -1,5 +1,8 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct MatchDTO {
     pub game_id: i64,
     pub participant_identities: Vec<ParticipantIdentityDTO>,
@@ -13,14 +16,18 @@ pub struct MatchDTO {
     pub game_version: String,
     pub map_id: i32,
     pub game_mode: String,
-    pub participants: Vec<ParticipantDTO>
+    pub participants: Vec<ParticipantDTO>,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct ParticipantIdentityDTO {
     pub participant_id: i32,
     pub player: PlayerDTO,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct PlayerDTO {
     pub profile_icon: i32,
     pub account_id: String,
@@ -32,6 +39,8 @@ pub struct PlayerDTO {
     pub platform_id: String,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct TeamStatsDTO {
     pub tower_kills: i32,
     pub rift_herald_kills: i32,
@@ -51,11 +60,15 @@ pub struct TeamStatsDTO {
     pub win: String,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct TeamBansDTO {
     pub champion_id: i32,
     pub pick_turn: i32,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct ParticipantDTO {
     pub participant_id: i32,
     pub champion_id: i32,
@@ -69,11 +82,15 @@ pub struct ParticipantDTO {
     pub masteries: Vec<MasteryDTO>,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct RuneDTO {
     pub rune_id: i32,
     pub rank: i32,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct ParticipantStatsDTO {
     pub item0: i32,
     pub item2: i32,
@@ -184,9 +201,11 @@ pub struct ParticipantStatsDTO {
     pub perk_sub_style: i32,
     pub stat_perk0: i32,
     pub stat_perk1: i32,
-    pub stat_perk2: i32
+    pub stat_perk2: i32,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct ParticipantTimelineDTO {
     pub participant_id: i32,
     pub cs_diff_per_min_deltas: HashMap<String, f32>,
@@ -197,10 +216,12 @@ pub struct ParticipantTimelineDTO {
     pub xp_diff_per_min_deltas: HashMap<String, f32>,
     pub lane: String,
     pub creeps_per_min_deltas: HashMap<String, f32>,
-    pub gold_per_mid_deltas: HashMap<String, f32>
+    pub gold_per_mid_deltas: HashMap<String, f32>,
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct MasteryDTO {
     pub rank: i32,
-    pub mastery_id: i32
+    pub mastery_id: i32,
 }

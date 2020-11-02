@@ -1,7 +1,7 @@
-use diesel::r2d2::ConnectionManager;
-use r2d2::Pool;
-use diesel::PgConnection;
 use crate::config::Config;
+use diesel::r2d2::ConnectionManager;
+use diesel::PgConnection;
+use r2d2::Pool;
 
 // no one wants to write a type out this long
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;

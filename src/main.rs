@@ -1,10 +1,11 @@
 use actix_cors::Cors;
 use actix_web::{middleware, App, HttpServer};
-use log::info;
-use std::sync::Arc;
-use chaotic_analyzer::{setup_logger, endpoints};
 use chaotic_analyzer::config::Config;
-use chaotic_analyzer::db::{PgPool, new_pool};
+use chaotic_analyzer::db::{new_pool, PgPool};
+use chaotic_analyzer::{endpoints, setup_logger};
+use log::info;
+use reqwest::Client;
+use std::sync::Arc;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -22,7 +23,7 @@ async fn main() -> std::io::Result<()> {
     };
 
     // Setup Config
-    let config: Arc<Config> = Arc::new(Config::new());
+    let config: Config = Config::new();
     let server_address = config.server_address.clone();
     // log the config
     info!("Starting Server with following configuration \n {}", config);
@@ -31,18 +32,18 @@ async fn main() -> std::io::Result<()> {
 
     // Edit Cors for production
     HttpServer::new(move || {
-        let cors = Cors::default()
-            .supports_credentials()
-            .max_age(3600);
+        let cors = Cors::default().supports_credentials().max_age(3600);
+        let client = Client::new();
         App::new()
             .wrap(cors)
             .data(config.clone())
             .data(pool.clone())
+            .data(client)
             .wrap(middleware::Logger::default())
             // .configure(endpoints::graphql::endpoints)
-            .configure(endpoints::rest::endpoints)
+            .configure(endpoints::endpoints)
     })
-        .bind(server_address)?
-        .run()
-        .await
+    .bind(server_address)?
+    .run()
+    .await
 }

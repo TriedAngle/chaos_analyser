@@ -1,0 +1,20 @@
+[2020-11-02][16:14:06][chaotic_analyzer][INFO] Starting Server with following configuration 
+ SERVER_ADDRESS: 127.0.0.1:8000 
+ DB_ADDRESS: postgres://admin:admin@127.0.0.1:5432/smv 
+ POOL_LIMIT: None 
+ 
+[2020-11-02][16:14:06][actix_server::builder][INFO] Starting 12 workers
+[2020-11-02][16:14:06][actix_server::builder][INFO] Starting "actix-web-service-127.0.0.1:8000" service on 127.0.0.1:8000
+[2020-11-02][16:15:02][reqwest::connect][DEBUG] starting new connection: https://euw1.api.riotgames.com/
+[2020-11-02][16:15:02][hyper::client::connect::dns][DEBUG] resolving host="euw1.api.riotgames.com" 
+[2020-11-02][16:15:02][hyper::client::connect::http][DEBUG] connecting to 52.17.13.188:443 
+[2020-11-02][16:15:02][hyper::client::connect::http][DEBUG] connected to 52.17.13.188:443 
+[2020-11-02][16:15:02][hyper::proto::h1::io][DEBUG] flushed 192 bytes 
+[2020-11-02][16:15:02][hyper::proto::h1::io][DEBUG] read 698 bytes 
+[2020-11-02][16:15:02][hyper::proto::h1::io][DEBUG] parsed 11 headers 
+[2020-11-02][16:15:02][hyper::proto::h1::conn][DEBUG] incoming body is content-length (301 bytes) 
+[2020-11-02][16:15:02][hyper::proto::h1::conn][DEBUG] incoming body completed 
+[2020-11-02][16:15:02][hyper::client::pool][DEBUG] pooling idle connection for ("https", euw1.api.riotgames.com) 
+[2020-11-02][16:15:02][reqwest::async_impl::client][DEBUG] response '200 OK' for https://euw1.api.riotgames.com/lol/summoner/v4/summoners/FW9CTLhB3yUo0CLlMq-OIqRK32dXqWFLaFKwyuz3vdCpDPk
+[2020-11-02][16:15:02][actix_web::middleware::logger][INFO] 127.0.0.1:63218 "GET /api/riot/summoners/EUW/FW9CTLhB3yUo0CLlMq-OIqRK32dXqWFLaFKwyuz3vdCpDPk HTTP/1.1" 200 301 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" 0.367962
+[2020-11-02][16:16:03][hyper::proto::h1::io][DEBUG] read 0 bytes 

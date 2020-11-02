@@ -4,9 +4,10 @@ extern crate diesel;
 pub mod config;
 pub mod db;
 pub mod endpoints;
-
 pub mod models;
+pub mod riot;
 pub mod schema;
+pub mod types;
 
 pub fn setup_logger() -> Result<(), fern::InitError> {
     fern::Dispatch::new()
